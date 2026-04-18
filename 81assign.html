@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Class in JS</title>
+</head>
+
+<body>
+
+<h2>Classes in JavaScript</h2>
+
+<p id="static"></p>
+<p id="inherit"></p>
+<p id="properties"></p>
+
+<script>
+
+// Parent Class
+class Person {
+
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  // Method
+  display() {
+    return "Name: " + this.name + " Age: " + this.age;
+  }
+
+  // Static Method
+  static hello() {
+    return "Hello, This is a Static Method";
+  }
+}
+
+
+// Child Class (Inheritance)
+class Student extends Person {
+
+  constructor(name, age, course) {
+    super(name, age);   // calling parent constructor
+    this.course = course;
+  }
+
+  show() {
+    return this.display() + " Course: " + this.course;
+  }
+
+}
+
+
+// Access Static Method
+document.getElementById("static").innerHTML = Person.hello();
+
+
+// Create Object
+let student1 = new Student("Daniel", 23, "Computer Science");
+
+
+// Access Inherited Method
+document.getElementById("inherit").innerHTML = student1.show();
+
+
+// Display Properties
+document.getElementById("properties").innerHTML =
+"Student Name: " + student1.name + 
+"<br>Age: " + student1.age + 
+"<br>Course: " + student1.course;
+
+</script>
+
+</body>
+</html>
