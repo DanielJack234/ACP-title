@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600,700" rel="stylesheet">
+
+    <style>
+
+        body{
+            margin:0;
+            padding:0;
+            font-family:'Open Sans', sans-serif;
+            background:black;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        #calculator{
+            width:320px;
+            background:rgba(255,255,255,0.1);
+            border-radius:15px;
+            padding:20px;
+            box-shadow:0 4px 15px rgba(255,255,255,0.2);
+        }
+
+        #result{
+            width:100%;
+            min-height:100px;
+            margin-bottom:20px;
+            text-align:right;
+            color:white;
+            word-wrap:break-word;
+        }
+
+        #history{
+            font-size:20px;
+            color:#bdbdbd;
+            min-height:30px;
+            padding:5px;
+        }
+
+        #output{
+            font-size:40px;
+            min-height:50px;
+            padding:5px;
+        }
+
+        #keyboard{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:10px;
+        }
+
+        button{
+            height:60px;
+            font-size:24px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            background:rgba(255,255,255,0.2);
+            color:white;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:rgba(255,255,255,0.4);
+        }
+
+        .operator{
+            background:orange;
+        }
+
+        .operator:hover{
+            background:darkorange;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="calculator">
+
+    <div id="result">
+
+        <div id="history">
+            <span id="history-value"></span>
+        </div>
+
+        <div id="output">
+            <span id="output-value"></span>
+        </div>
+
+    </div>
+
+    <div id="keyboard">
+
+        <button class="operator" id="clear">C</button>
+        <button class="operator" id="backspace">⌫</button>
+        <button class="operator" id="%">%</button>
+        <button class="operator" id="/">÷</button>
+
+        <button class="number" id="7">7</button>
+        <button class="number" id="8">8</button>
+        <button class="number" id="9">9</button>
+        <button class="operator" id="*">×</button>
+
+        <button class="number" id="4">4</button>
+        <button class="number" id="5">5</button>
+        <button class="number" id="6">6</button>
+        <button class="operator" id="-">-</button>
+
+        <button class="number" id="1">1</button>
+        <button class="number" id="2">2</button>
+        <button class="number" id="3">3</button>
+        <button class="operator" id="+">+</button>
+
+        <button class="number" id="0">0</button>
+        <button class="number" id=".">.</button>
+        <button class="operator" id="equals">=</button>
+
+    </div>
+
+</div>
+
+<script>
+
+function getHistory() {
+    return document.getElementById("history-value").innerText;
+}
+
+function printHistory(num) {
+    document.getElementById("history-value").innerText = num;
+}
+
+function getOutput() {
+    return document.getElementById("output-value").innerText;
+}
+
+function printOutput(num) {
+    document.getElementById("output-value").innerText = num;
+}
+
+var operators = document.getElementsByClassName("operator");
+
+for(let i = 0; i < operators.length; i++){
+
+    operators[i].addEventListener("click", function(){
+
+        if(this.id == "clear"){
+
+            printHistory("");
+            printOutput("");
+
+        }
+
+        else if(this.id == "backspace"){
+
+            let output = getOutput();
+            output = output.slice(0, -1);
+            printOutput(output);
+
+        }
+
+        else if(this.id == "equals"){
+
+            let output = getOutput();
+            let history = getHistory();
+
+            let expression = history + output;
+
+            try{
+
+                let result = eval(expression);
+
+                printOutput(result);
+                printHistory("");
+
+            }
+
+            catch{
+
+                printOutput("Error");
+            }
+
+        }
+
+        else{
+
+            let output = getOutput();
+            let history = getHistory();
+
+            if(output != ""){
+
+                history += output + this.id;
+
+                printHistory(history);
+                printOutput("");
+            }
+        }
+
+    });
+
+}
+
+var numbers = document.getElementsByClassName("number");
+
+for(let i = 0; i < numbers.length; i++){
+
+    numbers[i].addEventListener("click", function(){
+
+        let output = getOutput();
+
+        output += this.id;
+
+        printOutput(output);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
