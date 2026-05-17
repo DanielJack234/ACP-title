@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bank Income & Expense Tracker</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+
+    .container{
+      width:400px;
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:20px;
+      color:#1e3a8a;
+    }
+
+    .balance-box{
+      background:#1e3a8a;
+      color:white;
+      padding:20px;
+      border-radius:12px;
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    .summary{
+      display:flex;
+      justify-content:space-between;
+      margin:20px 0;
+    }
+
+    .card{
+      width:48%;
+      padding:15px;
+      border-radius:10px;
+      text-align:center;
+      color:white;
+    }
+
+    .income{
+      background:#16a34a;
+    }
+
+    .expense{
+      background:#dc2626;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    input, select, button{
+      padding:12px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      font-size:16px;
+    }
+
+    button{
+      background:#1e3a8a;
+      color:white;
+      border:none;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#162d6b;
+    }
+
+    .transactions{
+      margin-top:10px;
+    }
+
+    .transaction{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px;
+      border-radius:8px;
+      margin-bottom:10px;
+      color:white;
+    }
+
+    .transaction.income{
+      background:#22c55e;
+    }
+
+    .transaction.expense{
+      background:#ef4444;
+    }
+
+    .delete-btn{
+      background:black;
+      color:white;
+      border:none;
+      padding:5px 10px;
+      border-radius:5px;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>Bank Tracker App</h1>
+
+    <div class="balance-box">
+      <h2>Total Balance</h2>
+      <h1 id="balance">$0</h1>
+    </div>
+
+    <div class="summary">
+      <div class="card income">
+        <h3>Income</h3>
+        <p id="income">$0</p>
+      </div>
+
+      <div class="card expense">
+        <h3>Expenses</h3>
+        <p id="expense">$0</p>
+      </div>
+    </div>
+
+    <form id="transactionForm">
+      <input type="text" id="description" placeholder="Description" required>
+
+      <input type="number" id="amount" placeholder="Amount" required>
+
+      <select id="type">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+
+      <button type="submit">Add Transaction</button>
+    </form>
+
+    <div class="transactions" id="transactions"></div>
+
+  </div>
+
+  <script>
+    const balance = document.getElementById("balance");
+    const income = document.getElementById("income");
+    const expense = document.getElementById("expense");
+    const form = document.getElementById("transactionForm");
+    const transactionsDiv = document.getElementById("transactions");
+
+    let transactions = [];
+
+    function updateUI() {
+      let totalIncome = 0;
+      let totalExpense = 0;
+
+      transactions.forEach(t => {
+        if(t.type === "income") {
+          totalIncome += t.amount;
+        } else {
+          totalExpense += t.amount;
+        }
+      });
+
+      const totalBalance = totalIncome - totalExpense;
+
+      balance.textContent = "$" + totalBalance;
+      income.textContent = "$" + totalIncome;
+      expense.textContent = "$" + totalExpense;
+
+      transactionsDiv.innerHTML = "";
+
+      transactions.forEach((t, index) => {
+        const div = document.createElement("div");
+        div.classList.add("transaction", t.type);
+
+        div.innerHTML = `
+          <div>
+            <strong>${t.description}</strong><br>
+            $${t.amount}
+          </div>
+
+          <button class="delete-btn" onclick="deleteTransaction(${index})">
+            X
+          </button>
+        `;
+
+        transactionsDiv.appendChild(div);
+      });
+    }
+
+    function deleteTransaction(index) {
+      transactions.splice(index, 1);
+      updateUI();
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const description = document.getElementById("description").value;
+      const amount = Number(document.getElementById("amount").value);
+      const type = document.getElementById("type").value;
+
+      transactions.push({
+        description,
+        amount,
+        type
+      });
+
+      form.reset();
+      updateUI();
+    });
+
+    updateUI();
+  </script>
+
+</body>
+</html>
