@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Restaurant Portfolio</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+}
+
+/* SECTION */
+.portfolio-section{
+    padding:80px 8%;
+    text-align:center;
+}
+
+.portfolio-section h2{
+    font-size:45px;
+    color:#ffb703;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#ccc;
+    margin-bottom:50px;
+    font-size:18px;
+}
+
+/* GRID */
+.portfolio-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+/* CARD */
+.portfolio-card{
+    background:#1b1b1b;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,0.4);
+    transition:0.4s;
+    opacity:0;
+    transform:translateY(40px);
+}
+
+.portfolio-card.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.portfolio-card:hover{
+    transform:translateY(-10px) scale(1.02);
+}
+
+/* IMAGE */
+.portfolio-card img{
+    width:100%;
+    height:230px;
+    object-fit:cover;
+}
+
+/* CONTENT */
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    color:#ffb703;
+    margin-bottom:10px;
+    font-size:24px;
+}
+
+.card-content p{
+    color:#ddd;
+    line-height:1.5;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .portfolio-section h2{
+        font-size:35px;
+    }
+
+    .subtitle{
+        font-size:16px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<section id="portfolio" class="portfolio-section">
+
+    <h1> DANNY FOOD ENTERPRISES </h1>
+    <h2>Our Special Dishes</h2>
+
+    <p class="subtitle">
+        Taste the best meals crafted by our professional chefs
+    </p>
+
+    <div class="portfolio-grid">
+
+        <!-- CARD 1 -->
+        <div class="portfolio-card">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Steak">
+
+            <div class="card-content">
+                <h3>Grilled Steak</h3>
+                <p>
+                    Premium beef grilled with special spices and herbs.
+                </p>
+            </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="portfolio-card">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop" alt="Pizza">
+
+            <div class="card-content">
+                <h3>Italian Pizza</h3>
+                <p>
+                    Stone-baked pizza with fresh organic toppings.
+                </p>
+            </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="portfolio-card">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200&auto=format&fit=crop" alt="Burger">
+
+            <div class="card-content">
+                <h3>Classic Burger</h3>
+                <p>
+                    Double cheese burger with crispy fries and sauce.
+                </p>
+            </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="portfolio-card">
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=1200&auto=format&fit=crop" alt="Pasta">
+
+            <div class="card-content">
+                <h3>Creamy Pasta</h3>
+                <p>
+                    Delicious creamy pasta cooked with fresh ingredients.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+/* Scroll Animation */
+
+const cards = document.querySelectorAll(".portfolio-card");
+
+function showCards(){
+
+    cards.forEach(card => {
+
+        const cardTop = card.getBoundingClientRect().top;
+
+        if(cardTop < window.innerHeight - 100){
+            card.classList.add("show");
+        }
+
+    });
+
+}
+
+window.addEventListener("scroll", showCards);
+
+showCards();
+
+</script>
+
+</body>
+</html>
