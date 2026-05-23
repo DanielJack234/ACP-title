@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank Tracker App</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#f0f4f8;
+display:flex;
+justify-content:center;
+padding:30px;
+}
+
+.container{
+width:400px;
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+color:#0056b3;
+}
+
+.balance{
+text-align:center;
+padding:15px;
+background:#0056b3;
+color:white;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.summary{
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+}
+
+.box{
+width:48%;
+padding:10px;
+border-radius:10px;
+text-align:center;
+}
+
+.income{
+background:#d4ffd4;
+}
+
+.expense{
+background:#ffd4d4;
+}
+
+form input,
+form select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#0056b3;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#003d80;
+}
+
+ul{
+list-style:none;
+margin-top:20px;
+}
+
+li{
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin-bottom:8px;
+border-radius:8px;
+background:#eee;
+}
+
+.delete{
+background:red;
+color:white;
+padding:5px 8px;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏦 Bank Tracker</h1>
+
+<div class="balance">
+<h2>Balance</h2>
+<h1>$<span id="balance">0</span></h1>
+</div>
+
+<div class="summary">
+
+<div class="box income">
+<h3>Income</h3>
+<p>$<span id="income">0</span></p>
+</div>
+
+<div class="box expense">
+<h3>Expenses</h3>
+<p>$<span id="expense">0</span></p>
+</div>
+
+</div>
+
+<form id="form">
+
+<input
+type="text"
+id="desc"
+placeholder="Description"
+required>
+
+<input
+type="number"
+id="amount"
+placeholder="Amount"
+required>
+
+<select id="type">
+<option value="income">Income</option>
+<option value="expense">Expense</option>
+</select>
+
+<button>Add Transaction</button>
+
+</form>
+
+<ul id="transactions"></ul>
+
+</div>
+
+<script>
+
+let transactions=[];
+
+const form=
+document.getElementById("form");
+
+const balance=
+document.getElementById("balance");
+
+const income=
+document.getElementById("income");
+
+const expense=
+document.getElementById("expense");
+
+const list=
+document.getElementById("transactions");
+
+function updateUI(){
+
+list.innerHTML="";
+
+let totalIncome=0;
+let totalExpense=0;
+
+transactions.forEach((item,index)=>{
+
+if(item.type==="income"){
+totalIncome+=item.amount;
+}else{
+totalExpense+=item.amount;
+}
+
+let li=
+document.createElement("li");
+
+li.innerHTML=
+`
+${item.desc}
+<span>
+$${item.amount}
+
+<button
+class="delete"
+onclick="removeItem(${index})">
+X
+</button>
+
+</span>
+`;
+
+list.appendChild(li);
+
+});
+
+income.textContent=totalIncome;
+
+expense.textContent=totalExpense;
+
+balance.textContent=
+totalIncome-totalExpense;
+
+}
+
+form.addEventListener(
+"submit",
+function(e){
+
+e.preventDefault();
+
+let desc=
+document
+.getElementById("desc")
+.value;
+
+let amount=
+Number(
+document
+.getElementById("amount")
+.value
+);
+
+let type=
+document
+.getElementById("type")
+.value;
+
+transactions.push({
+desc,
+amount,
+type
+});
+
+form.reset();
+
+updateUI();
+
+}
+);
+
+function removeItem(index){
+
+transactions.splice(index,1);
+
+updateUI();
+
+}
+
+updateUI();
+
+</script>
+
+</body>
+</html>
